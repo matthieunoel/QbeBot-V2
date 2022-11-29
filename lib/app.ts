@@ -22,6 +22,7 @@ class App {
         const tables: ISQLTable[] = [
             Contact
         ];
+        // TODO : Bordel asynchrone : ...
         const dbBuilder: DbBuilder = new DbBuilder(appConfig.sqlite.dbPath, tables);
         const db: Database = dbBuilder.run();
         SQLiteHelper.init(db);

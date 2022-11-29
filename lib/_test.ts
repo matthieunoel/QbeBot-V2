@@ -4,25 +4,53 @@ import { DbBuilder } from './dbBuilder';
 import { Database } from 'sqlite3';
 import { SQLiteHelper } from './sqliteHelper';
 
-async function test(): Promise<void> {
+const dbPath = "./testDB.db";
 
-    // Building database
-    const tables: ISQLTable[] = [
-        Contact
-    ];
-    const dbBuilder: DbBuilder = new DbBuilder("testDB.db", tables);
-    const db: Database = dbBuilder.run();
-    SQLiteHelper.init(db);
+async function test(): Promise<boolean> {
 
-    console.log("START");
-    let contacts: Contact[] = await SQLiteHelper.Instance.runQuery<Contact>("select * from contact where firstName = ?", "Marcel");
-    console.log("contacts", contacts);
-    console.log("OK?");
-    
+    return new Promise<boolean>(async (resolve, reject) => {
+
+        console.log("START");
+
+        // Building database
+        const tables: ISQLTable[] = [
+            Contact
+        ];
+        console.log("A");
+        const dbBuilder: DbBuilder = new DbBuilder(dbPath, tables);
+        console.log("B");
+        const db: Database = dbBuilder.run();
+        console.log("C");
+        SQLiteHelper.init(db);
+
+        console.log("D");
+
+        console.log("SQLiteHelper.Instance", SQLiteHelper.Instance);
+
+        SQLiteHelper.Instance.runQuery<Contact>("select * from contact where firstName = ?", "Marcel").then((contacts: Contact[]) => {
+            console.log("contacts", contacts);
+            console.log("E");
+            resolve(true);
+        }).catch((err) => {
+            console.error(err);
+            reject();
+        });
+        
+    })
+
 }
 
-test();
+let end: boolean = false;
 
-setTimeout(() => {
-    console.log("END");
-}, 10000);
+test().then((res: boolean) => {
+    end = res;
+});
+
+while (end) {
+    // we wait ...
+}
+
+console.log("END");
+
+var fs = require('fs');
+fs.unlinkSync(dbPath);

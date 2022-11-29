@@ -1,5 +1,3 @@
-// https://www.linode.com/docs/guides/getting-started-with-nodejs-sqlite/
-
 var sqlite3 = require('sqlite3');
 import { Database } from "sqlite3";
 import { ISQLTable } from './models/ISQLTable';
