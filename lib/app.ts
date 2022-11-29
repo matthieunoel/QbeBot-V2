@@ -1,19 +1,32 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { Routes } from "./routes/crmRoutes";
-import * as mongoose from "mongoose";
+import { DbBuilder } from './dbBuilder';
+import { SQLiteHelper } from './sqliteHelper';
+import { Database } from 'sqlite3';
+import { Contact } from "./models/contact";
+import { ISQLTable } from './models/ISQLTable';
+
+const appConfig = require('./appConfig.json');
 
 class App {
 
     public app: express.Application = express();
     public routePrv: Routes = new Routes();
-    // public mongoUrl: string = 'mongodb://localhost/CRMdb';  
-    public mongoUrl: string = 'mongodb://dalenguyen:123123@localhost:27017/CRMdb';
 
     constructor() {
+
         this.config();
-        this.mongoSetup();
-        this.routePrv.routes(this.app);     
+
+        // Building database
+        const tables: ISQLTable[] = [
+            Contact
+        ];
+        const dbBuilder: DbBuilder = new DbBuilder(appConfig.sqlite.dbPath, tables);
+        const db: Database = dbBuilder.run();
+        SQLiteHelper.init(db);
+
+        this.routePrv.routes(this.app);
     }
 
     private config(): void{
@@ -21,11 +34,6 @@ class App {
         this.app.use(bodyParser.urlencoded({ extended: false }));
         // serving static files 
         this.app.use(express.static('public'));
-    }
-
-    private mongoSetup(): void{
-        mongoose.Promise = global.Promise;
-        mongoose.connect(this.mongoUrl, {useNewUrlParser: true});        
     }
 
 }
