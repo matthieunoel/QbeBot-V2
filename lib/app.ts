@@ -1,18 +1,18 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/crmRoutes";
-import { DbBuilder } from './dbBuilder';
-import { SQLiteHelper } from './sqliteHelper';
-import { Database } from 'sqlite3';
-import { Contact } from "./models/contact";
+import { IndexRoutes } from "./routes/indexRoutes";
+import { DATA } from './DATA';
+import { Contact } from "./models/contactModel";
 import { ISQLTable } from './models/ISQLTable';
+import { ContactRoutes } from './routes/contactRoutes';
 
-const appConfig = require('./appConfig.json');
+const appConfig: any = require('./appConfig.json');
 
 class App {
 
     public app: express.Application = express();
-    public routePrv: Routes = new Routes();
+    public indexRoutes: IndexRoutes = new IndexRoutes();
+    public indexContact: ContactRoutes = new ContactRoutes();
 
     constructor() {
 
@@ -22,12 +22,11 @@ class App {
         const tables: ISQLTable[] = [
             Contact
         ];
-        // TODO : Bordel asynchrone : ...
-        const dbBuilder: DbBuilder = new DbBuilder(appConfig.sqlite.dbPath, tables);
-        const db: Database = dbBuilder.run();
-        SQLiteHelper.init(db);
 
-        this.routePrv.routes(this.app);
+        DATA.initDB(appConfig.sqlite.dbPath as string, tables);
+
+        this.indexRoutes.routes(this.app);
+        this.indexContact.routes(this.app);
     }
 
     private config(): void{
