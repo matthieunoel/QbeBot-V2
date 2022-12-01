@@ -11,7 +11,28 @@ export class ContactRoutes {
             console.log(`Request from: ${req.originalUrl}`);
             console.log(`Request type: ${req.method}`);
             next();                      
-        }, ContactController.getContacts)  
+        }, ContactController.GET_Contacts);
+
+        // app.param('contactId', function(req: Request, res: Response, next: NextFunction, contactId: string) {
+
+        //     if (!isNaN(parseInt(contactId))) {
+        //         res.json(new Error("Contact ID is not a valid number."));
+        //         res.send();
+        //     }
+        //     else {
+        //         req.body.contactId = contactId;
+        //         console.log(req.body);
+        //         next();
+        //     }
+
+        // });
+
+        // app.route('/contacts/:contactId')
+        // .get((req: Request, res: Response, next: NextFunction) => {
+        //     console.log(`Request from: ${req.originalUrl}`);
+        //     console.log(`Request type: ${req.method}`);
+        //     next();                      
+        // }, ContactController.GET_Contacts)  
 
         // // Contact 
         // app.route('/contact')

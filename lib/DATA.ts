@@ -13,14 +13,11 @@ export class DATA {
     public static get SQLiteDB(): Database
     {
 
-        console.debug("Call DATA.SqliteDB");
-
         if (this._dbPath == "") {
             throw new Error(typeof DATA+" haven't been init yet.");
         }
 
         if (this._sqliteDB == null || !this._sqliteDB.open) {
-            console.debug("| Creating DATA.SqliteDB");
             this._sqliteDB = new Database(this._dbPath, { verbose: console.log, fileMustExist: true });    
         }
         

@@ -30,10 +30,18 @@ class App {
     }
 
     private config(): void{
+
+        const jsonErrorHandler = (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(500);
+            res.send(JSON.stringify(err));
+        }
+
+        this.app.set('json spaces', 2);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
-        // serving static files 
         this.app.use(express.static('public'));
+        this.app.use(jsonErrorHandler);
     }
 
 }
