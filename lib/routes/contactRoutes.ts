@@ -6,12 +6,17 @@ export class ContactRoutes {
     public async routes(app: Application): Promise<void> {
         
         // Contact 
-        app.route('/contacts')
-        .get((req: Request, res: Response, next: NextFunction) => {
-            console.log(`Request from: ${req.originalUrl}`);
-            console.log(`Request type: ${req.method}`);
+        app.get('/contacts',
+        (req: Request, res: Response, next: NextFunction) => {
+            console.log(`Request : ${req.method} ${req.originalUrl}`);
             next();                      
-        }, ContactController.GET_Contacts);
+        }, ContactController.GET_Contacts_All);
+
+        app.get('/contacts/:Id', 
+        (req: Request, res: Response, next: NextFunction) => {
+            console.log(`Request : ${req.method} ${req.originalUrl}`);
+            next();                      
+        }, ContactController.GET_Contacts_ById);
 
         // app.param('contactId', function(req: Request, res: Response, next: NextFunction, contactId: string) {
 
