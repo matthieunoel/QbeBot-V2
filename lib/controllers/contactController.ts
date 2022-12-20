@@ -25,17 +25,45 @@ export class ContactController {
 
             const whereStatement: string =  whereStatements.length > 0 ? " WHERE " + whereStatements.join(' AND ') : "";
 
-            const statement: Statement = DATA.SQLiteDB.prepare("SELECT * FROM contact" + whereStatement);
+            let endStatements: string[] = [];
+            let endArgs: any[] = [];
 
-            let contacts: any = statement.all(whereArgs) as Contact[];
+            if (req.query.rowLimit != undefined) {
+                endStatements.push("LIMIT ?");
+                endArgs.push(req.query.rowLimit)
+            }
+            if (req.query.rowOffset != undefined) {
+                
+                if (req.query.rowLimit == undefined) {
+                    throw new Error("Parameter \"rowLimit\" is missing.");
+                }
+
+                endStatements.push("OFFSET ?");
+                endArgs.push(req.query.rowOffset)
+            }
+
+            const endStatement: string =  endStatements.length > 0 ? " " + endStatements.join(' ') : "";
+
+            console.log("SELECT * FROM contact" + whereStatement + endStatement, [].concat(whereArgs, endArgs));
+
+            const statement: Statement = DATA.SQLiteDB.prepare("SELECT * FROM contact" + whereStatement + endStatement);
+
+            let contacts: any = statement.all([].concat(whereArgs, endArgs)) as Contact[];
+
+            const maxRow = DATA.SQLiteDB.prepare("SELECT COUNT(*) as CNT FROM contact" + whereStatement).get(whereArgs).CNT
+
             DATA.SQLiteDB.close();
 
             return res.json(new OKResponseModel(
                 Date.now() - startTime,
-                contacts
+                contacts,
+                maxRow
             )).send();
 
         } catch (error: any) {
+
+            console.error(error);
+
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error
@@ -65,6 +93,9 @@ export class ContactController {
             res.send();
 
         } catch (error) {
+
+            console.error(error);
+
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error
@@ -87,10 +118,13 @@ export class ContactController {
 
             return res.json(new OKResponseModel(
                 Date.now() - startTime,
-                [contact]
+                contact
             )).send();
 
         } catch (error) {
+
+            console.error(error);
+            
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error
@@ -117,10 +151,13 @@ export class ContactController {
 
             return res.json(new OKResponseModel(
                 Date.now() - startTime,
-                [newContact]
+                newContact
             )).send();
 
         } catch (error) {
+
+            console.error(error);
+            
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error
@@ -154,10 +191,13 @@ export class ContactController {
 
             return res.json(new OKResponseModel(
                 Date.now() - startTime,
-                [oldContact]
+                oldContact
             )).send();
 
         } catch (error) {
+
+            console.error(error);
+            
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error
@@ -182,12 +222,15 @@ export class ContactController {
 
             res.json(new OKResponseModel(
                 Date.now() - startTime,
-                []
+                null
             ));
 
             res.send();
 
         } catch (error) {
+
+            console.error(error);
+            
             res.status(500).json(new KOResponseModel(
                 Date.now() - startTime,
                 error as Error

@@ -6,11 +6,19 @@ export interface IResponse {
 
 export class OKResponseModel implements IResponse {
 
-    constructor(executionTime: number, content: any, executionTimeUnit: string = "ms") {
+    constructor(executionTime: number, content: any, maxRow:number = null, executionTimeUnit: string = "ms") {
         this.content = content;
         this.executionTime = executionTime;
         this.executionTimeUnit = executionTimeUnit;
         this.OK = true;
+
+        if (maxRow == undefined && Array.isArray(content)) {
+            this.maxRow = 1;
+        }
+        else if(maxRow != undefined) {
+            this.maxRow = maxRow;
+        }
+
     }
     
     OK: boolean;
@@ -18,6 +26,7 @@ export class OKResponseModel implements IResponse {
     executionTimeUnit: string;
 
     content: any
+    maxRow?: number
 }
 
 export class KOResponseModel implements IResponse {
