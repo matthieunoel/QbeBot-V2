@@ -6,25 +6,28 @@ import { Statement } from 'better-sqlite3';
 
 export class ContactController {
 
-    public static GET_Contacts(req: Request, res: Response) {
-
-        // if (typeof req.query.id != "undefined") {
-        //     this.GET_Contacts_ById(req, res);
-        // }
-        // else {
-        //     this.GET_Contacts_All(req, res);
-        // }
-
-        res.json({ response: "Eeeeeeeeeh ... WIP" });
-
-    }
-
     public static GET_Contacts_All(req: Request, res: Response) {
         const startTime = Date.now();
 
         try {
 
-            let contacts: any = DATA.SQLiteDB.prepare("SELECT * FROM contact").all() as Contact[];
+            let whereStatements: string[] = [];
+            let whereArgs: any[] = [];
+
+            if (req.query.firstName != undefined) {
+                whereStatements.push("firstName = ?");
+                whereArgs.push(req.query.firstName);
+            }
+            if (req.query.lastName != undefined) {
+                whereStatements.push("lastName = ?");
+                whereArgs.push(req.query.lastName)
+            }
+
+            const whereStatement: string =  whereStatements.length > 0 ? " WHERE " + whereStatements.join(' AND ') : "";
+
+            const statement: Statement = DATA.SQLiteDB.prepare("SELECT * FROM contact" + whereStatement);
+
+            let contacts: any = statement.all(whereArgs) as Contact[];
             DATA.SQLiteDB.close();
 
             return res.json(new OKResponseModel(
