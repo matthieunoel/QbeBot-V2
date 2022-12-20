@@ -5,8 +5,39 @@ import { DATA } from './DATA';
 import { Contact } from "./models/contactModel";
 import { ISQLTable } from './models/ISQLTable';
 import { ContactRoutes } from './routes/contactRoutes';
+import { LOG } from "./log";
 
 const appConfig: any = require('./appConfig.json');
+
+// log4js.configure({
+//     appenders: [
+//         {
+//             type: "clustered",
+//             appenders: [
+//             {
+//                 type: "dateFile",
+//                 filename: "log/access.log",
+//                 pattern: "-yyyy-MM-dd",
+//                 category: "http"
+//             },
+//             {
+//                 type: "file",
+//                 filename: "log/app.log",
+//                 maxLogSize: 10485760,
+//                 numBackups: 3
+//             },
+//             {
+//                 type: "logLevelFilter",
+//                 level: "ERROR",
+//                 appender: {
+//                 type: "file",
+//                 filename: "log/errors.log"
+//                 }
+//             }
+//             ]
+//         }
+//     ]
+// });
 
 class App {
 
@@ -30,6 +61,23 @@ class App {
     }
 
     private config(): void{
+
+        LOG.initLogger({
+            appenders: {
+                mainFile: {
+                    type: "file",
+                    filename: "log/app.log",
+                    maxLogSize: 10485760,
+                    numBackups: 3
+                }
+            },
+            categories: {
+                default: { 
+                    appenders: ["mainFile"], 
+                    level: require("./appConfig.json").env.toLowerCase() == "dev" ? "trace" : "info"
+                }
+            },
+        });       
 
         const jsonErrorHandler = (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
             res.setHeader('Content-Type', 'application/json');

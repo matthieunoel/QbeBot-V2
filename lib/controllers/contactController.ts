@@ -44,7 +44,7 @@ export class ContactController {
 
             const endStatement: string =  endStatements.length > 0 ? " " + endStatements.join(' ') : "";
 
-            console.log("SELECT * FROM contact" + whereStatement + endStatement, [].concat(whereArgs, endArgs));
+            // console.log("SELECT * FROM contact" + whereStatement + endStatement, [].concat(whereArgs, endArgs));
 
             const statement: Statement = DATA.SQLiteDB.prepare("SELECT * FROM contact" + whereStatement + endStatement);
 
