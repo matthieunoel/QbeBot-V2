@@ -98,4 +98,70 @@ export class ContactController {
         }
     }
 
+    public static PUT_Contacts(req: Request, res: Response) {
+        const startTime = Date.now();
+
+        try {
+
+            let contact: Contact = req.body as Contact;
+
+            const stmt: Statement = DATA.SQLiteDB.prepare('INSERT INTO contact (firstName, lastName) VALUES (?, ?)');
+            const info: any = stmt.run(contact.firstName, contact.lastName); // https://github.com/WiseLibs/better-sqlite3/blob/HEAD/docs/api.md#runbindparameters---object
+            contact.id = info.lastInsertRowid as number;
+            DATA.SQLiteDB.close();
+
+            return res.json(new OKResponseModel(
+                Date.now() - startTime,
+                [contact]
+            )).send();
+
+        } catch (error) {
+            res.status(500).json(new KOResponseModel(
+                Date.now() - startTime,
+                error as Error
+            )).end()
+        }
+    }
+
+    public static PATCH_Contacts(req: Request, res: Response) {
+        const startTime = Date.now();
+
+        try {
+
+            let newContact: Contact = req.body as Contact;
+            newContact.id = parseInt(req.params.Id);
+            let oldContact: Contact = DATA.SQLiteDB.prepare("SELECT * FROM contact WHERE id = ?").get(req.params.Id) as Contact;
+
+            if (oldContact == undefined) {
+                return res.status(204).end();
+            }
+
+            let keys = Object.keys(oldContact);
+            for (let i = 0; i < keys.length; i++) {
+                if (newContact[keys[i]] != undefined) {
+                    oldContact[keys[i]] = newContact[keys[i]];
+                }
+            }
+
+            const stmt: Statement = DATA.SQLiteDB.prepare('UPDATE contact SET firstName = ?, lastName = ? WHERE id = ? LIMIT 1');
+            stmt.run(oldContact.firstName, oldContact.lastName, req.params.Id);
+            DATA.SQLiteDB.close();
+
+            return res.json(new OKResponseModel(
+                Date.now() - startTime,
+                [oldContact]
+            )).send();
+
+        } catch (error) {
+            res.status(500).json(new KOResponseModel(
+                Date.now() - startTime,
+                error as Error
+            )).end()
+        }
+    }
+
+    public static DELETE_Contacts(req: Request, res: Response) {
+        return
+    }
+
 }

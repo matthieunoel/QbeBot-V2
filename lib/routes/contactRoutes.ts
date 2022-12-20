@@ -3,27 +3,29 @@ import {Request, Response, NextFunction, Application} from "express";
 
 export class ContactRoutes {
     
+    private static requestAuth(req: Request, res: Response, next: NextFunction) {
+            console.log(`Request : ${req.method} ${req.originalUrl}`);
+            if (req.body != undefined) {
+                console.log("Request Body :", req.body);
+            }
+            console.log();
+            next();
+    }
+
     public async routes(app: Application): Promise<void> {
         
         // Contact 
-        app.get('/contacts',
-        (req: Request, res: Response, next: NextFunction) => {
-            console.log(`Request : ${req.method} ${req.originalUrl}`);
-            next();                      
-        }, ContactController.GET_Contacts_All);
+        app.get('/contacts', ContactRoutes.requestAuth, ContactController.GET_Contacts_All);
 
-        app.get('/contacts/:Id', 
-        (req: Request, res: Response, next: NextFunction) => {
-            console.log(`Request : ${req.method} ${req.originalUrl}`);
-            next();                      
-        }, ContactController.GET_Contacts_ById);
+        app.get('/contacts/:Id', ContactRoutes.requestAuth, ContactController.GET_Contacts_ById);
 
-        app.post('/contacts/', 
-        (req: Request, res: Response, next: NextFunction) => {
-            console.log(`Request : ${req.method} ${req.originalUrl}`);
-            console.log('Request body :', req.body);
-            next();                      
-        }, ContactController.POST_Contacts);
+        app.post('/contacts/', ContactRoutes.requestAuth, ContactController.POST_Contacts);
+
+        app.put('/contacts/:Id', ContactRoutes.requestAuth, ContactController.PUT_Contacts);
+
+        app.patch('/contacts/:Id', ContactRoutes.requestAuth, ContactController.PATCH_Contacts);
+
+        app.delete('/contacts/:Id', ContactRoutes.requestAuth, ContactController.DELETE_Contacts);
 
         // app.param('contactId', function(req: Request, res: Response, next: NextFunction, contactId: string) {
 
