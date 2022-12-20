@@ -1,11 +1,6 @@
-import { ISQLTable } from './ISQLTable';
-
-function staticImplements<T>() {
-    return <U extends T>(constructor: U) => {constructor};
-}
+import { ISQLTable, staticImplements } from './ISQLTable';
 
 @staticImplements<ISQLTable>()
-// @ts-ignore
 export class Contact {
 
     id: number;

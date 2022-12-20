@@ -1,14 +1,24 @@
-import {Request, Response} from "express";
+import {Application, Request, Response} from "express";
+import { OKResponseModel } from "../models/ResponseModel";
+import { BaseRoute } from './_baseRoute';
 
-export class IndexRoutes {
+export class IndexRoutes extends BaseRoute {
     
-    public routes(app): void {   
+    public routes(app: Application): void {   
         
         app.route('/')
-        .get((req: Request, res: Response) => {            
-            res.status(200).send({
-                message: 'GET request successfulll!!!!'
-            })
+        .get(IndexRoutes.requestPublic, (req: Request, res: Response) => {      
+            const startTime = Date.now();      
+            res.status(200).send(
+                new OKResponseModel(
+                    Date.now() - startTime,
+                    {
+                        appName: require('../appConfig').name,
+                        appVersion: require('../../package.json').version,
+                        appDescription: require('../../package.json').description
+                    }
+                )
+            )
         })
 
     }

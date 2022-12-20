@@ -1,7 +1,7 @@
 {
-    "name": "crm",
+    "name": "sqlite3restapi",
     "version": "1.0.0",
-    "description": "An API built with NodeJS, Express, MongoDB and TypeScript",
+    "description": "An API built with NodeJS, Express, SQLite3 and TypeScript",
     "main": "dist/server.js",
     "scripts": {
         "test": "ts-node ./lib/_test.ts",

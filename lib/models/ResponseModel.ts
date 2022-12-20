@@ -6,7 +6,7 @@ export interface IResponse {
 
 export class OKResponseModel implements IResponse {
 
-    constructor(executionTime: number, content: object[] = [], executionTimeUnit: string = "ms") {
+    constructor(executionTime: number, content: any, executionTimeUnit: string = "ms") {
         this.content = content;
         this.executionTime = executionTime;
         this.executionTimeUnit = executionTimeUnit;
@@ -17,12 +17,12 @@ export class OKResponseModel implements IResponse {
     executionTime: number;
     executionTimeUnit: string;
 
-    content: Object[]
+    content: any
 }
 
 export class KOResponseModel implements IResponse {
 
-    constructor(executionTime: number, error: Error = null, executionTimeUnit: string = "ms") {
+    constructor(executionTime: number, error: Error, executionTimeUnit: string = "ms") {
         this.executionTime = executionTime;
         this.executionTimeUnit = executionTimeUnit;
         this.OK = false;
