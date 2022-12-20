@@ -1,5 +1,6 @@
 {
     "sqlite": {
         "dbPath": "./sqlite-database.db"
-    }
+    },
+    "port": 3000
 }
