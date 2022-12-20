@@ -15,9 +15,9 @@ export class Contact {
     public static toSQLCreateScript(): string {
         return `
             create table contact (
-                id int primary key not null,
-                firstName text not null,
-                lastName text not null
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                firstName text NOT NULL,
+                lastName text NOT NULL
             );
 
             insert into contact (id, firstName, lastName)

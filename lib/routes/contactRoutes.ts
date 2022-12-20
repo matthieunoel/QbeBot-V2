@@ -18,6 +18,13 @@ export class ContactRoutes {
             next();                      
         }, ContactController.GET_Contacts_ById);
 
+        app.post('/contacts/', 
+        (req: Request, res: Response, next: NextFunction) => {
+            console.log(`Request : ${req.method} ${req.originalUrl}`);
+            console.log('Request body :', req.body);
+            next();                      
+        }, ContactController.POST_Contacts);
+
         // app.param('contactId', function(req: Request, res: Response, next: NextFunction, contactId: string) {
 
         //     if (!isNaN(parseInt(contactId))) {

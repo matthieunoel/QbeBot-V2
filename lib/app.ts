@@ -39,7 +39,7 @@ class App {
 
         this.app.set('json spaces', 2);
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static('public'));
         this.app.use(jsonErrorHandler);
     }
