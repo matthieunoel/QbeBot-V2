@@ -15,12 +15,12 @@ export class ContactController {
             let whereArgs: any[] = [];
 
             if (req.query.firstName != undefined) {
-                whereStatements.push("firstName = ?");
-                whereArgs.push(req.query.firstName);
+                whereStatements.push("firstName LIKE ?");
+                whereArgs.push(`%${req.query.firstName}%`);
             }
             if (req.query.lastName != undefined) {
-                whereStatements.push("lastName = ?");
-                whereArgs.push(req.query.lastName)
+                whereStatements.push("lastName LIKE ?");
+                whereArgs.push(`%${req.query.lastName}%`)
             }
 
             const whereStatement: string =  whereStatements.length > 0 ? " WHERE " + whereStatements.join(' AND ') : "";
@@ -103,16 +103,21 @@ export class ContactController {
 
         try {
 
-            let contact: Contact = req.body as Contact;
+            let newContact: Contact = req.body as Contact;
+            newContact.id = parseInt(req.params.Id);
+            let oldContact: Contact = DATA.SQLiteDB.prepare("SELECT * FROM contact WHERE id = ?").get(req.params.Id) as Contact;
 
-            const stmt: Statement = DATA.SQLiteDB.prepare('INSERT INTO contact (firstName, lastName) VALUES (?, ?)');
-            const info: any = stmt.run(contact.firstName, contact.lastName); // https://github.com/WiseLibs/better-sqlite3/blob/HEAD/docs/api.md#runbindparameters---object
-            contact.id = info.lastInsertRowid as number;
+            if (oldContact == undefined) {
+                return res.status(204).end();
+            }
+
+            const stmt: Statement = DATA.SQLiteDB.prepare('UPDATE contact SET firstName = ?, lastName = ? WHERE id = ? LIMIT 1');
+            stmt.run(newContact.firstName, newContact.lastName, req.params.Id);
             DATA.SQLiteDB.close();
 
             return res.json(new OKResponseModel(
                 Date.now() - startTime,
-                [contact]
+                [newContact]
             )).send();
 
         } catch (error) {
@@ -161,7 +166,34 @@ export class ContactController {
     }
 
     public static DELETE_Contacts(req: Request, res: Response) {
-        return
+        
+        const startTime = Date.now();
+
+        try {
+
+            let contact: any = DATA.SQLiteDB.prepare("SELECT * FROM contact WHERE id = ?").get(req.params.Id) as Contact;
+            DATA.SQLiteDB.close();
+
+            if (contact == undefined) {
+                return res.status(204).end();
+            }
+
+            DATA.SQLiteDB.prepare("DELETE FROM contact WHERE id = ?").run(req.params.Id);
+
+            res.json(new OKResponseModel(
+                Date.now() - startTime,
+                []
+            ));
+
+            res.send();
+
+        } catch (error) {
+            res.status(500).json(new KOResponseModel(
+                Date.now() - startTime,
+                error as Error
+            )).end()
+        }
+
     }
 
 }
