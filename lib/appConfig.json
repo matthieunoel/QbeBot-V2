@@ -4,7 +4,8 @@
         "dbPath": "./sqlite-database.db"
     },
     "port": 3000,
-    "apiKey": [
+    "apiKeys": [
         "wLENPrpmYXR7PP2mCtHg2JCBlvCvp9QC"
-    ]
+    ],
+    "env": "prod"
 }

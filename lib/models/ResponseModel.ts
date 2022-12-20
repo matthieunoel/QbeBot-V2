@@ -29,7 +29,10 @@ export class KOResponseModel implements IResponse {
 
         this.errorName = error.name;
         this.errorMessage = error.message;
-        this.errorStack = error.stack;
+        
+        if (require("../appConfig").env.toLowerCase() == "dev") {
+            this.errorStack = error.stack;
+        }
 
     }
 

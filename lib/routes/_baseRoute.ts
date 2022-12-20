@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { KOResponseModel } from './../models/ResponseModel';
 
 export class BaseRoute {
     
@@ -15,6 +16,20 @@ export class BaseRoute {
         if (req.body != undefined) {
             console.log("Request Body :", req.body);
         }
-        next();
+
+        const apiKeys: string[] = require("../appConfig").apiKeys as string[];
+        const givenKey: string = req.headers["authorization"];
+
+        if (!apiKeys.includes(givenKey)) {
+            return res.status(401).json(
+                new KOResponseModel(
+                    -1,
+                    new Error("Bad token.")
+                )
+            ).send().end();
+        }
+        else {
+            next();
+        }
     }
 }
