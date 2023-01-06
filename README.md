@@ -1,11 +1,12 @@
-# Building RESTful Web APIs with Node.js, Express, SQLite and TypeScript
+# QbeBOT - V2
 
-This is a simple API that saves contact information of people. 
+There used to be QbeBOT in python. Now there will be the V2, stronger and cleaner than ever !
 
-There are two versions of this project. 
+This is a the base code of the QbeBOT. It's purpose is to help be in my daily student's life.
 
-- [V1.0.0](https://github.com/dalenguyen/rest-api-node-typescript/tree/v1.0.0): you can run the server directly after cloning this version. It will create a simple RESTful API over HTTP. 
-- [V2.0.0](https://github.com/dalenguyen/rest-api-node-typescript/tree/v2.0.0): this is a more secure and control API project. You need to read the post on [how to secure RESTful API application](https://itnext.io/building-restful-web-apis-with-node-js-express-mongodb-and-typescript-part-5-a80e5a7f03db) first. After that, you can run the project.
+## Source
+
+Based on [RestApiNodeSQLite Repository](https://github.com/matthieunoel/RestApiNodeSQLite) (Commit [49e39bc.](https://github.com/matthieunoel/RestApiNodeSQLite/commit/49e39bccf4e77abbde7a53e5973122f9a0211863) : "Logging system")
 
 ## Requirements
 
@@ -20,7 +21,7 @@ npm install -g typescript ts-node
 ## Clone this repository
 
 ```
-git clone git@github.com:dalenguyen/rest-api-node-typescript.git .
+git clone git@github.com:matthieunoel/QbeBot-V2.git .
 ```
 
 Then install the dependencies
@@ -42,21 +43,3 @@ Run in production mode
 ```
 npm run prod
 ```
-
-## Testing over HTTP (tag [v1.0.0](https://github.com/matthieunoel/RestApiNodeSQLite/tree/v1.0.0))
-
-The default URL is: *http://localhost:3000*
-
-+ GET all contacts
-
-```
-Send GET request to http://localhost:3000/contact/
-```
-
-## Testing over HTTPs (tag [v2.0.0](https://github.com/matthieunoel/RestApiNodeSQLite/tree/v2.0.0))
-
-The default URL is: *https://localhost:3000*
-
-The key and cert in the config folder is for testing purpose only. You should generate your own.
-
-*Reference from [Lynda.com](https://www.lynda.com/Node-js-tutorials/Next-steps/633869/671263-4.html)*
