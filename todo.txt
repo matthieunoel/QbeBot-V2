@@ -1,0 +1,5 @@
+(1) Swagger
+(2) Update ./README.md
+(3) Implement automated tests (jest ?)
+(4) log4js + GetLogs ? {cm:2022-12-20}
+(5) rowLimit(?number), rowOffset(?number) on GET {cm:2022-12-20}

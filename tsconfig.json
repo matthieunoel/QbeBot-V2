@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "pretty": true,
+        "sourceMap": true,
+        "target": "es6",
+        "outDir": "./dist",
+        "baseUrl": "./lib",
+        "resolveJsonModule": true
+    },
+    "include": [
+        "lib/**/*.ts",
+        "lib/appConfig.json"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

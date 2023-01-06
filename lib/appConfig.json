@@ -1,0 +1,11 @@
+{
+    "name": "Sqlite3 Clean REST Api",
+    "sqlite": {
+        "dbPath": "./sqlite-database.db"
+    },
+    "port": 3000,
+    "apiKeys": [
+        "wLENPrpmYXR7PP2mCtHg2JCBlvCvp9QC"
+    ],
+    "env": "prod"
+}

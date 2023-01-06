@@ -1,0 +1,9 @@
+{
+    "restructuredtext.confPath": "${workspaceFolder}\\docs",
+    "files.exclude": {
+        "**/.github": true,
+        "**/.vscode": true,
+        "**/**.js.map": true,
+        "**/node_modules": true
+    }
+}
