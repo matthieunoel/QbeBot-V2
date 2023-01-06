@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "An API built with NodeJS, Express, SQLite3 and TypeScript",
     "main": "dist/server.js",
+    "repository": {
+        "url": "https://github.com/matthieunoel/QbeBot-V2"
+    },
     "scripts": {
         "test": "ts-node ./lib/_test.ts",
         "build": "tsc",
